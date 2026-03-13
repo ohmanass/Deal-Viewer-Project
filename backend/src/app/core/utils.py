@@ -1,9 +1,10 @@
-from bson import ObjectId
+from bson import ObjectId 
 
 def serialize_doc(doc: dict) -> dict:
-    """Convertit les ObjectId en string pour la serialisation JSON."""
+    """Convertit les ObjectId en string pour la serialisation vers JSON"""
     if doc is None:
         return None
+
     result = {}
     for key, value in doc.items():
         if isinstance(value, ObjectId):
@@ -11,24 +12,22 @@ def serialize_doc(doc: dict) -> dict:
         elif isinstance(value, dict):
             result[key] = serialize_doc(value)
         elif isinstance(value, list):
-            result[key] = [
-                serialize_doc(item) if isinstance(item, dict) else
-                str(item) if isinstance(item, ObjectId) else item
-                for item in value
-            ]
+            serialized_list = []
+            for item in value:
+                if isinstance(item, dict):
+                    serialized_list.append(serialize_doc(item))
+                elif isinstance(item, ObjectId):
+                    serialized_list.append(str(item))
+                else:
+                    serialized_list.append(item)
+            result[key] = serialized_list
         else:
             result[key] = value
     return result
 
-
 def to_object_id(id_str: str) -> ObjectId:
-    """Convertit un string en ObjectId, leve ValueError si invalide."""
+    """Convertit un string en ObjectId et renvoie ValueError si invalide"""
     try:
         return ObjectId(id_str)
     except Exception:
         raise ValueError(f"Invalid ID : '{id_str}'")
-
-
-
-
-

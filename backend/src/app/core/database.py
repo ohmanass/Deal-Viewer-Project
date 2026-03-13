@@ -22,13 +22,11 @@ async def connect_db():
         print("Failure to connect to MongoDB")
         raise
 
-
 async def disconnect_db():
     global client
     if client:
         client.close()
         print("Disconnnected from MongoDB")
-
 
 def get_db():
     return db

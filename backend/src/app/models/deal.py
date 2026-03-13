@@ -2,8 +2,7 @@ from pydantic import BaseModel, Field
 from typing import Optional, List
 from datetime import datetime
 
-
-# --- Sous-documents ---
+# --- sous docs ---
 class Contact(BaseModel):
     firstName: str
     lastName: str
@@ -57,7 +56,7 @@ class Note(BaseModel):
     createdAt: Optional[datetime] = None
 
 
-# --- Document principal ---
+# --- doc principal ---
 class DealCreate(BaseModel):
     reference: str
     title: str
